@@ -6,6 +6,18 @@ const auth = require('../middlewares/auth');
 
 
 
+/**
+ * @api {post} /auth/register Registrar usuario
+ * @apiName RegistrarUsuario
+ * @apiGroup Auth
+ *
+ * @apiBody {String} nombre Nombre del usuario.
+ * @apiBody {String} email Correo electrónico.
+ * @apiBody {String} password Contraseña.
+ * @apiBody {String} rol Rol del usuario ("admin" o "cliente").
+ *
+ * @apiSuccess {String} mensaje Usuario registrado correctamente.
+ */
 
 // Registro
 router.post('/register', async (req, res) => {
@@ -24,6 +36,18 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Error al registrar usuario' });
   }
 });
+
+
+/**
+ * @api {post} /auth/login Iniciar sesión
+ * @apiName Login
+ * @apiGroup Auth
+ *
+ * @apiBody {String} email Correo del usuario.
+ * @apiBody {String} password Contraseña.
+ *
+ * @apiSuccess {String} token Token JWT de acceso.
+ */
 
 
 // LOGIN

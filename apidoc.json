@@ -1,0 +1,10 @@
+{
+  "name": "Inventario API",
+  "version": "1.0.0",
+  "description": "API REST para prueba de inventario (Node.js + Sequelize + PostgreSQL)",
+  "title": "Documentación API - Inventario",
+  "url": "http://localhost:3000",
+  "template": {
+    "withGenerator": true
+  }
+}

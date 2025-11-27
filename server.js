@@ -5,6 +5,7 @@ const { sequelize } = require('./models'); // Sequelize ORM
 const errorHandler = require('./middlewares/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const path = require('path');
 
 // Middlewares base
 app.use(cors());
@@ -15,6 +16,11 @@ app.use(errorHandler);
 app.use('/api/auth', require('./routes/auth')); // rutas de autenticación
 app.use('/api/productos', require('./routes/productos')); // rutas de productos
 app.use('/api/compras', require('./routes/compras')); // rutas de compras
+
+// Documentación API
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
+
+
 // Ruta de prueba
 app.get('/', (req, res) => {
   res.json({ message: 'API Inventario funcionando correctamente' });

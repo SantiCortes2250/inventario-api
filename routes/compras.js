@@ -6,9 +6,33 @@ const { createCompraRules } = require("../validators/compraValidator");
 const validate = require("../middlewares/validate");
 const logger = require("../utils/logger");
 
+
+
 // ===========================================
 //   CREAR UNA COMPRA (CLIENTE)
 // ===========================================
+
+/**
+ * @api {post} /compras Crear una compra
+ * @apiName CrearCompra
+ * @apiGroup Compras
+ * @apiPermission cliente|admin
+ *
+ * @apiHeader {String} Authorization Token JWT.
+ *
+ * @apiBody {Object[]} productos Lista de productos a comprar.
+ * @apiBody {Number} productos.productoId ID del producto.
+ * @apiBody {Number} productos.cantidad Cantidad solicitada.
+ *
+ * @apiSuccess {String} mensaje Mensaje de éxito.
+ * @apiSuccess {Number} compraId ID de la compra creada.
+ *
+ * @apiError (400) PayloadInvalido El arreglo de productos es inválido.
+ * @apiError (400) StockInsuficiente No hay suficiente stock.
+ * @apiError (404) ProductoNoExiste El producto no existe.
+ * @apiError (500) ErrorServer Error al registrar compra.
+ */
+
 router.post(
   "/",
   auth(["cliente", "admin"]),
@@ -101,9 +125,26 @@ router.post(
   }
 );
 
+
+
+
 // ===========================================
 //     LISTAR TODAS LAS COMPRAS (ADMIN)
 // ===========================================
+
+/**
+ * @api {get} /compras Listar todas las compras
+ * @apiName ListarCompras
+ * @apiGroup Compras
+ * @apiPermission admin
+ *
+ * @apiHeader {String} Authorization Token JWT.
+ *
+ * @apiSuccess {Object[]} compras Lista de compras.
+ *
+ * @apiError (500) ErrorServer Error al obtener compras.
+ */
+
 router.get("/", auth(["admin"]), async (req, res) => {
   logger.info(`Admin UsuarioID=${req.user.id} solicitó todas las compras`);
 
@@ -132,9 +173,28 @@ router.get("/", auth(["admin"]), async (req, res) => {
   }
 });
 
+
+
+
 // ===========================================
 //     HISTORIAL DE COMPRAS DEL CLIENTE
 // ===========================================
+
+/**
+ * @api {get} /compras/mis-compras Historial del cliente
+ * @apiName MisCompras
+ * @apiGroup Compras
+ * @apiPermission cliente
+ *
+ * @apiHeader {String} Authorization Token JWT.
+ *
+ * @apiSuccess {Object[]} compras Lista de compras del usuario.
+ *
+ * @apiError (500) ErrorServer Error al obtener historial.
+ */
+
+
+
 router.get("/mis-compras", auth(["cliente"]), async (req, res) => {
   logger.info(`Cliente UsuarioID=${req.user.id} solicitó su historial de compras`);
 
@@ -166,9 +226,32 @@ router.get("/mis-compras", auth(["cliente"]), async (req, res) => {
   }
 });
 
+
+
+
 // ===========================================
 //  OBTENER FACTURA / DETALLE DE UNA COMPRA
 // ===========================================
+
+/**
+ * @api {get} /compras/:id Obtener detalle de una compra - Factura
+ * @apiName ObtenerCompra
+ * @apiGroup Compras
+ * @apiPermission cliente|admin
+ *
+ * @apiHeader {String} Authorization Token JWT.
+ *
+ * @apiParam {Number} id ID de la compra.
+ *
+ * @apiSuccess {Object} compra Información completa de la compra.
+ *
+ * @apiError (404) NoEncontrada La compra no existe.
+ * @apiError (403) Prohibido No puede ver compras de otros usuarios.
+ * @apiError (500) ErrorServer Error al obtener factura.
+ */
+
+
+
 router.get("/:id", auth(["cliente", "admin"]), async (req, res) => {
   logger.info(
     `Solicitud de factura CompraID=${req.params.id} por UsuarioID=${req.user.id} Rol=${req.user.rol}`
