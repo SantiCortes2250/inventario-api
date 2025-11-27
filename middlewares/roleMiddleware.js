@@ -1,5 +1,5 @@
 module.exports = function(allowedRoles = []) {
-  // allowedRoles puede ser string 'admin' o array ['admin','otro']
+  
   if (typeof allowedRoles === 'string') allowedRoles = [allowedRoles];
 
   return (req, res, next) => {

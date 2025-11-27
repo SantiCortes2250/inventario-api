@@ -27,7 +27,7 @@ router.post('/register', async (req, res) => {
     const existe = await Usuario.findOne({ where: { email } });
     if (existe) return res.status(400).json({ error: 'El email ya está registrado' });
 
-    // No hashear aquí: el hook beforeCreate en el modelo se encarga
+
     const usuario = await Usuario.create({ nombre, email, password, rol });
 
     res.json({ usuario });
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
     const usuario = await Usuario.findOne({ where: { email } });
     if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
 
-    // Usar método del modelo
+
     const valido = usuario.validarPassword(password);
     if (!valido) return res.status(400).json({ error: 'Contraseña incorrecta' });
 

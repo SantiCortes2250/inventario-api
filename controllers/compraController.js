@@ -1,5 +1,3 @@
-// controllers/compraController.js
-
 const { Compra, CompraDetalle, Producto, Cliente } = require('../models');
 
 exports.obtenerFactura = async (req, res) => {

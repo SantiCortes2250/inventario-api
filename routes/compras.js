@@ -55,7 +55,7 @@ router.post(
 
       let total = 0;
 
-      // Verificar productos y calcular total
+    
       for (let item of productos) {
         const prod = await Producto.findByPk(item.productoId);
 
@@ -80,7 +80,7 @@ router.post(
         total += prod.precio * item.cantidad;
       }
 
-      // Crear la compra
+ 
       const compra = await Compra.create({
         usuarioId: req.user.id,
         fecha: new Date(),
@@ -91,7 +91,7 @@ router.post(
         `Compra creada exitosamente. CompraID=${compra.id} UsuarioID=${req.user.id} Total=${total}`
       );
 
-      // Crear detalles + Restar stock
+
       for (let item of productos) {
         const prod = await Producto.findByPk(item.productoId);
 
@@ -249,7 +249,6 @@ router.get("/mis-compras", auth(["cliente"]), async (req, res) => {
  * @apiError (403) Prohibido No puede ver compras de otros usuarios.
  * @apiError (500) ErrorServer Error al obtener factura.
  */
-
 
 
 router.get("/:id", auth(["cliente", "admin"]), async (req, res) => {

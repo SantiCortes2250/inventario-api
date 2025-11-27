@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { sequelize } = require('./models'); // Sequelize ORM
+const { sequelize } = require('./models'); 
 const errorHandler = require('./middlewares/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,13 +30,13 @@ app.get('/', (req, res) => {
 async function startServer() {
   try {
     await sequelize.authenticate();
-    console.log('📌 Conexión a PostgreSQL establecida con éxito.');
+    console.log('Conexión a PostgreSQL establecida con éxito.');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Error al conectar con la base de datos:', error);
+    console.error('Error al conectar con la base de datos:', error);
   }
 }
 

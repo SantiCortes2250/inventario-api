@@ -6,14 +6,13 @@ const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
     static associate(models) {
-      // Un usuario (cliente) puede tener muchas compras
+
       Usuario.hasMany(models.Compra, {
         foreignKey: 'usuarioId',
         as: 'compras'
       });
     }
 
-    // Método para comparar contraseñas al hacer login
     validarPassword(password) {
       return bcrypt.compareSync(password, this.password);
     }
@@ -48,7 +47,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Usuario',
       tableName: 'Usuarios',
 
-      // 🔥 HOOKS: encriptan contraseña automáticamente antes de crear y actualizar
       hooks: {
         beforeCreate: async (usuario) => {
           if (usuario.password) {

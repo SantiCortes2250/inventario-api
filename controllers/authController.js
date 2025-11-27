@@ -10,7 +10,6 @@ module.exports = {
     try {
       const { nombre, email, password, rol } = req.body;
 
-      // validaciones mínimas
       if (!nombre || !email || !password) {
         return res.status(400).json({ message: 'nombre, email y password son requeridos' });
       }
@@ -25,7 +24,7 @@ module.exports = {
         rol: rol ? rol : 'cliente'
       });
 
-      return res.status(201).json({ usuario }); // toJSON del modelo oculta password
+      return res.status(201).json({ usuario }); 
     } catch (err) {
       console.error('register error:', err);
       return res.status(500).json({ message: 'Error al registrar usuario' });
