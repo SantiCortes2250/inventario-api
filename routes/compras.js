@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
-
 const { Compra, CompraDetalle, Producto, Usuario } = require('../models');
+const { createCompraRules } = require('../validators/compraValidator');
+const validate = require('../middlewares/validate');
 
 // ===========================================
 //   CREAR UNA COMPRA (CLIENTE)
 // ===========================================
-router.post('/', auth(['cliente', 'admin']), async (req, res) => {
+router.post('/', auth(['cliente', 'admin']), createCompraRules, validate, async (req, res) => {
   try {
     const { productos } = req.body;
 

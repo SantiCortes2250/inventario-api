@@ -2,31 +2,19 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth');
 const { Producto } = require('../models');
+const { createProductRules, updateProductRules } = require('../validators/productValidator');
+const validate = require('../middlewares/validate');
 
 // ============================
 //   CREAR PRODUCTO (ADMIN)
 // ============================
-router.post('/', auth(['admin']), async (req, res) => {
+router.post('/', auth(['admin']), createProductRules, validate, async (req, res, next) => {
   try {
     const { lote, nombre, precio, cantidad, fechaIngreso } = req.body;
-
-    if (!lote || !nombre || !precio || !cantidad || !fechaIngreso) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
-    }
-
-    const nuevo = await Producto.create({
-      lote,
-      nombre,
-      precio,
-      cantidad,
-      fechaIngreso
-    });
-
-    res.json({ mensaje: "Producto creado", producto: nuevo });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error al crear producto" });
+    const nuevo = await Producto.create({ lote, nombre, precio, cantidad, fechaIngreso });
+    res.status(201).json({ mensaje: "Producto creado", producto: nuevo });
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -61,17 +49,14 @@ router.get('/:id', auth(['admin']), async (req, res) => {
 // ============================
 //     ACTUALIZAR PRODUCTO
 // ============================
-router.put('/:id', auth(['admin']), async (req, res) => {
+router.put('/:id', auth(['admin']), updateProductRules, validate, async (req, res, next) => {
   try {
     const producto = await Producto.findByPk(req.params.id);
-    if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
-
+    if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
     await producto.update(req.body);
-
-    res.json({ mensaje: "Producto actualizado", producto });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error al actualizar" });
+    res.json({ mensaje: 'Producto actualizado', producto });
+  } catch (err) {
+    next(err);
   }
 });
 
