@@ -69,7 +69,7 @@ router.get('/', auth(['admin']), async (req, res) => {
   try {
     const compras = await Compra.findAll({
       include: [
-        { model: User, as: 'cliente', attributes: ['id', 'nombre', 'email'] },
+        { model: Usuario, as: 'usuario', attributes: ['id', 'nombre', 'email'] },
         {
           model: CompraDetalle,
           as: 'detalles',
@@ -116,6 +116,38 @@ router.get('/mis-compras', auth(['cliente']), async (req, res) => {
   }
 });
 
+
+// ===========================================
+//   LISTAR TODAS LAS COMPRAS (ADMIN)
+// ===========================================
+router.get('/', auth(['admin']), async (req, res) => {
+  try {
+    const compras = await Compra.findAll({
+      include: [
+        { 
+          model: Usuario,
+          as: 'usuario',
+          attributes: ['id', 'nombre', 'email']
+        },
+        {
+          model: CompraDetalle,
+          as: 'detalles',
+          include: [{ model: Producto, as: 'producto' }]
+        }
+      ]
+    });
+
+    res.json(compras);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error al obtener compras",
+      detalle: error.message
+    });
+  }
+});
+
+
 // ===========================================
 //  OBTENER FACTURA / DETALLE DE UNA COMPRA
 // ===========================================
@@ -146,6 +178,7 @@ router.get('/:id', auth(['cliente', 'admin']), async (req, res) => {
   res.status(500).json({ error: "Error al obtener factura", detalle: error.message });
   }
 });
+
 
 
 
