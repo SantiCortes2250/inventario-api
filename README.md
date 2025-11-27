@@ -1,63 +1,66 @@
 # 📦 API de Inventario — Node.js, Express, Sequelize, PostgreSQL
 
-**Este proyecto implementa un API RESTful para la gestión de inventario y compras, desarrollado como parte de una prueba técnica.
-Incluye autenticación con JWT, manejo de roles (Administrador y Cliente), CRUD de productos, módulo de compras, facturación e historial, además de buenas prácticas como validaciones, logs y manejo de errores.
+**Proyecto desarrollado como parte de una prueba técnica, con un enfoque profesional y completo.
+Incluye autenticación con JWT, roles, CRUD de productos, módulo de compras, facturación, historial, validaciones, logs avanzados con Winston, manejo centralizado de errores y documentación automática con ApiDoc.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-| Tecnología          | Uso                                                  |
-|---------------------|------------------------------------------------------|
-| **Node.js + Express** | Backend del proyecto y creación de endpoints REST   |
-| **Sequelize ORM**     | Modelado de datos, migraciones y consultas a BD     |
-| **PostgreSQL**        | Base de datos relacional usada para el sistema      |
-| **JWT**               | Mecanismo de autenticación por tokens               |
-| **bcryptjs**          | Encriptación y verificación de contraseñas          |
-| **dotenv**            | Manejo de variables de entorno                      |
-| **morgan**            | Registro detallado de peticiones HTTP               |
-| **express-validator** | Validación de datos en los endpoints                |
+| Tecnología            | Uso                                  |
+| --------------------- | ------------------------------------ |
+| **Node.js + Express** | Backend y creación de endpoints REST |
+| **Sequelize ORM**     | Modelado de datos y consultas a BD   |
+| **PostgreSQL**        | Base de datos relacional             |
+| **JWT**               | Autenticación mediante tokens        |
+| **bcryptjs**          | Encriptación de contraseñas          |
+| **dotenv**            | Variables de entorno                 |
+| **morgan**            | Logs HTTP básicos                    |
+| **Winston**           | Logger avanzado a archivos y consola |
+| **express-validator** | Validación de entradas en endpoints  |
+| **ApiDoc**            | Documentación automática de la API   |
+
 
 
 ---
 
 ## 📘 Descripción del Proyecto
 
-El sistema gestiona usuarios, productos y compras, diferenciando permisos entre:
+La API permite gestionar usuarios, productos y compras con separación estricta de permisos.
 
-👤 Roles
-Administrador
+👑 Administrador
 
 ✔ CRUD completo de productos
 ✔ Gestión de inventario
-✔ Visualización de todas las compras
-✔ Información detallada: fecha, cliente, productos, cantidad, precio total
+✔ Visualización de todas las compras de los clientes
+✔ Información detallada: productos, cantidades, totales, fecha y usuario
 
-Cliente
+👤 Cliente
 
-✔ Realizar compras de uno o varios productos
-✔ Ver factura completa con detalle
-✔ Ver su historial de compras
+✔ Realizar compras
+✔ Factura completa por compra
+✔ Historial de compras propio
 
 ---
-
-
-
 
 # 🧭 Estructura del Proyecto
 ```bash
 
 inventario-api/
+│── config/
 │── controllers/
+│── docs/        ← Documentación generada por ApiDoc
+│── logs/
 │── middlewares/
 │── migrations/
 │── models/
 │── routes/
 │── seeders/
 │── utils/
-│── app.js
-│── config.json
+│── validators/
+│── server.js
 │── README.md
+│── .env
 
 
 ```
@@ -91,8 +94,8 @@ Asegúrate de tener PostgreSQL instalado y en ejecución. Crea la base de datos 
 npx sequelize-cli db:migrate
 
 
-# 6️⃣ (Opcional) Ejecutar seeders para datos iniciales
-npx sequelize-cli db:seed:all
+# 6️⃣ Generar documentación
+npm run apidoc
 
 # 7️⃣ Iniciar la aplicación
 npm run dev
@@ -105,15 +108,15 @@ npm run dev
 
 # 📦 Producto
 
-número de lote
+lote
 
 nombre
 
 precio
 
-cantidad disponible
+cantidad
 
-fecha de ingreso
+fechaIngreso
 
 # 🧾 Compra
 
@@ -123,7 +126,7 @@ total
 
 fecha
 
-📑 CompraDetalle
+# 📑 CompraDetalle
 
 productoId
 
@@ -162,8 +165,8 @@ Se envía en los headers:
 
 | Método | Ruta               | Descripción                     | Protección |
 |--------|--------------------|----------------------------------|------------|
-| POST   | `/api/register`    | Registrar nuevo usuario         | ❌ Pública |
-| POST   | `/api/login`       | Iniciar sesión y obtener token  | ❌ Pública |
+| POST   | `/api/register`    | Registrar nuevo usuario         | si          |
+| POST   | `/api/login`       | Iniciar sesión y obtener token  | si          |
 
 
 # 📦 Productos (Administrador)
@@ -189,5 +192,75 @@ Se envía en los headers:
 ---
 
 
+# 🧰 Validaciones
+
+Se usa express-validator para:
+
+✔ Productos: campos obligatorios, tipos de datos, mínimos
+✔ Compras: estructura de productos, cantidades, IDs válidos
+✔ Usuarios: email válido, contraseña mínima
+
+Todos los errores son enviados en un formato unificado por middlewares/validate.js.
+
+---
+
+# 📛 Manejo Centralizado de Errores
+
+Todos los errores de la API se envían hacia middlewares/errorHandler.js, permitiendo:
+
+✔ Logs con Winston
+✔ Respuestas claras y homogéneas
+✔ Evita repetición de bloques try/catch
+
+---
 
 
+# 📛 Manejo Centralizado de Errores
+
+📜 Logs Avanzados con Winston
+
+Configurado en:
+
+```bash utils/logger.js```
+
+Incluye:
+
+✔ Nivel info → consola + archivo
+✔ Nivel error → archivo separado
+✔ Log de intentos inválidos de compra
+✔ Log de errores SQL
+✔ Log de compras exitosas
+
+---
+
+# 📚 Documentación (ApiDoc)
+
+📜 Logs Avanzados con Winston
+
+Generación:
+
+```bash npm run apidoc```
+
+Salida:
+
+```bash /docs/index.html```
+
+Puedes abrirlo en el navegador para ver la documentación completa de la API.
+
+---
+
+# 🎯 Conclusión
+
+Este proyecto cuenta con:
+
+✔ CRUD completo
+✔ Autenticación JWT
+✔ Roles Admin/Cliente
+✔ Compras + facturación + historial
+✔ Validaciones robustas
+✔ Logs avanzados
+✔ Manejo centralizado de errores
+✔ ApiDoc totalmente implementado
+
+
+---
