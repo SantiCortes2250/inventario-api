@@ -1,6 +1,6 @@
 # 📦 API de Inventario — Node.js, Express, Sequelize, PostgreSQL
 
-**Proyecto desarrollado como parte de una prueba técnica, con un enfoque profesional y completo.
+Proyecto desarrollado como parte de una prueba técnica.
 Incluye autenticación con JWT, roles, CRUD de productos, módulo de compras, facturación, historial, validaciones, logs avanzados con Winston, manejo centralizado de errores y documentación automática con ApiDoc.
 
 ---
@@ -163,10 +163,10 @@ Se envía en los headers:
 ## 📡 Tabla de Endpoints del Proyecto
 # 🔐 Autenticación / Usuarios
 
-| Método | Ruta               | Descripción                     | Protección |
-|--------|--------------------|----------------------------------|------------|
-| POST   | `/api/register`    | Registrar nuevo usuario         | si          |
-| POST   | `/api/login`       | Iniciar sesión y obtener token  | si          |
+| Método | Ruta               | Descripción                     |
+|--------|--------------------|---------------------------------|
+| POST   | `/api/register`    | Registrar nuevo usuario         | 
+| POST   | `/api/login`       | Iniciar sesión y obtener token  |       
 
 
 # 📦 Productos (Administrador)
@@ -234,8 +234,6 @@ Incluye:
 ---
 
 # 📚 Documentación (ApiDoc)
-
-📜 Logs Avanzados con Winston
 
 Generación:
 
