@@ -44,7 +44,7 @@ Cliente
 
 
 
-# 🧭 Project structure (root)
+# 🧭 Estructura del Proyecto
 ```bash
 
 inventario-api/
@@ -68,7 +68,7 @@ inventario-api/
 
 ```bash
 # 1️⃣ Clonar el repositorio
-git clone https://github.com/<tu-usuario>/<tu-repo>.git
+git clone https://github.com/SantiCortes2250/inventario-api
 cd inventario-api
 
 # 2️⃣ Instalar dependencias
@@ -83,7 +83,6 @@ DB_USERNAME=postgres
 DB_PASSWORD=tu_password
 DB_NAME=inventario_db
 DB_HOST=localhost
-JWT_SECRET=supersecreto123
 
 # 4️⃣ Configurar la base de datos
 Asegúrate de tener PostgreSQL instalado y en ejecución. Crea la base de datos especificada en DB_NAME.
@@ -98,7 +97,7 @@ npx sequelize-cli db:seed:all
 # 7️⃣ Iniciar la aplicación
 npm run dev
 
----
+```
 
 ---
 
